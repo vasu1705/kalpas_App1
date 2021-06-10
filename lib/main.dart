@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kalpas_carrers/User_Classes.dart';
+import 'package:kalpas_carrers/display_news.dart';
 import 'package:kalpas_carrers/signUp.dart';
 
 void main() {
-  runApp(Home());
+  runApp(
+    Home()
+  );
 }
 
 class Home extends StatelessWidget {
@@ -14,23 +20,24 @@ class Home extends StatelessWidget {
     return MaterialApp(
       title: "Kalpas Inovation",
       routes: {
-        '/':(context)=>Signin(),
-        '/SignUp':(context)=>Signup(),
+        '/': (context) => Signin(),
+        '/Details': (context) => DisplayNews(),
+        '/SignUp': (context) => Signup(),
       },
     );
   }
 }
+
 class Signin extends StatelessWidget {
   const Signin({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+            constraints:
+                BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
             child: Stack(
               children: [
                 Image.asset("Images/grad2.jpg"),
@@ -42,10 +49,13 @@ class Signin extends StatelessWidget {
                       flex: 1,
                       child: Padding(
                         padding:
-                        EdgeInsets.symmetric(vertical: 80, horizontal: 10),
+                            EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                         child: Text(
                           "Welcome",
-                          style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w400),
+                          style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400),
                           textAlign: TextAlign.start,
                         ),
                       ),
@@ -87,7 +97,23 @@ class Signin extends StatelessWidget {
                                   height: 20,
                                 ),
                                 MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print(user_signin.email);
+                                    print(user_signin.password);
+                                    void authenticate() async {
+                                      var url = Uri.parse("https://nodejs-register-login-app.herokuapp.com/login");
+                                      print(jsonEncode(user_signin.tojson()));
+                                      var response = await http.post(url, body: {"email":"${user_signin.email}","password":"${user_signin.password}"});
+                                      var data = json.decode(response.body);
+                                      if (data["Success"] == "Success!") {
+                                        Navigator.pushNamed(context, '/Details');
+                                      } else {
+                                        print(data["Success"]);
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${data["Success"]}"),));
+                                      }
+                                    }
+                                    authenticate();
+                                  },
                                   elevation: 10,
                                   color: Colors.lightBlue,
                                   minWidth: 150,
@@ -112,16 +138,20 @@ class Signin extends StatelessWidget {
                                       "https://assets.materialup.com/uploads/82eae29e-33b7-4ff7-be10-df432402b2b6/preview",
                                       width: 40,
                                     ),
-                                    SizedBox(width: 20,),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
                                     Image.network(
                                       "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
                                       width: 40,
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 MaterialButton(
-                                  onPressed: (){
+                                  onPressed: () {
                                     Navigator.pushNamed(context, '/SignUp');
                                   },
                                   child: Text(
@@ -130,7 +160,6 @@ class Signin extends StatelessWidget {
                                         fontSize: 18, color: Colors.blueAccent),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
@@ -161,6 +190,19 @@ class textbox extends StatelessWidget {
           borderRadius: new BorderRadius.circular(20.0),
         ),
         child: TextField(
+          onChanged: (text){
+            if(hinttext=="Email"){
+              user_signin.email=text;
+              user_signup.email=text;
+            }
+            else if(hinttext=="Password") {
+              user_signin.password=text;
+              user_signup.password=text;
+            }
+            else if(hinttext=="Re-enter Password"){
+              user_signup.passwordConf=text;
+            }
+          },
           cursorColor: Colors.purple,
           decoration: InputDecoration(
               focusColor: Colors.white,
@@ -182,3 +224,5 @@ class textbox extends StatelessWidget {
     );
   }
 }
+
+

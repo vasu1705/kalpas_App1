@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:kalpas_carrers/User_Classes.dart';
 import 'main.dart';
 
 
@@ -67,7 +70,27 @@ class Signup extends StatelessWidget {
                                   height: 10,
                                 ),
                                 MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+
+                                    void Register() async {
+                                      var url = Uri.parse("https://nodejs-register-login-app.herokuapp.com");
+                                      print(jsonEncode(user_signup.tojson()));
+                                      var response = await http.post(url, body: {"email":"${user_signup.email}","password":"${user_signup.password}","passwordConf":"${user_signup.passwordConf}","username":"test"});
+
+                                      if (response.body.isEmpty) {
+                                        print("No Response Received");
+                                      } else {
+                                        var data = json.decode(response.body);
+                                        if (data["Success"] == "You are regestered,You can login now.") {
+                                          Navigator.pop(context);
+                                        } else {
+                                          print(data["Success"]);
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${data["Success"]}"),));
+                                        }
+                                      }
+                                    }
+                                    Register();
+                                  },
                                   elevation: 10,
                                   color: Colors.lightBlue,
                                   minWidth: 150,
