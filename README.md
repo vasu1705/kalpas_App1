@@ -1,16 +1,16 @@
 # kalpas_carrers
 
-A new Flutter application.
+A new Flutter application. This app showcase the basic CRUD operations from the server along with user sign In And sign Up window. 
 
-## Getting Started
+## Library Used 
+- Material 
+- http
+### UI
+<img src="signin.jpg" width=250 height=500> <img src="signup.jpg" width=250 height=500> <img src="news.jpg" width=250 height=500> <img src="fav.jpg" width=250 height=500> <img src="newsl.jpg" width=250 height=500>
 
-This project is a starting point for a Flutter application.
+### Task Link 
+https://careers.kalpas.in/flutter-hybrid-developer/
 
-A few resources to get you started if this is your first Flutter project:
+### Download apk 
+https://drive.google.com/file/d/1dn7URqI1GttFiG9ng94QXMVd0DiQn0Hf/view?usp=sharing
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
